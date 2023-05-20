@@ -2,6 +2,7 @@ import csv
 import os
 import signal
 import time
+import timeit
 from datetime import datetime
 from pynput import keyboard, mouse
 
@@ -9,6 +10,7 @@ from pynput import keyboard, mouse
 def generate_csv_filename():
     timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
     return f'events_{timestamp}.csv'
+
 
 current_event = ''  # Variable to store the current event
 csv_filename = generate_csv_filename()
@@ -18,8 +20,12 @@ def on_move(x, y):
     event_type = 'Move'
     print(f'{event_type} to ({x}, {y})')
 
+    # Calculate the elapsed time
+    elapsed_time = timeit.default_timer() - start_time
+
     # Write the event data to the CSV file
-    write_event_to_csv([time.time(), event_type, '', x, y, 0])
+    write_event_to_csv([event_type, '', x, y, 0, elapsed_time])
+
 
 def on_click(x, y, button, pressed):
     if pressed:
@@ -40,17 +46,26 @@ def on_click(x, y, button, pressed):
         event_type = 'Release'
         print(f'{event_type} at ({x}, {y}) with {button}')
 
+    # Calculate the elapsed time
+    elapsed_time = timeit.default_timer() - start_time
+
     # Write the event data to the CSV file
-    write_event_to_csv([time.time(), event_type, button.name if button else '', x, y, 0])
+    write_event_to_csv([time.time(), event_type, button.name if button else '', x, y, 0, elapsed_time])
+
 
 on_click.last_click = None
+
 
 def on_scroll(x, y, dx, dy):
     event_type = 'Scroll'
     print(f'{event_type} {(dx, dy)} at ({x}, {y})')
 
+    # Calculate the elapsed time
+    elapsed_time = timeit.default_timer() - start_time
+
     # Write the event data to the CSV file
-    write_event_to_csv([time.time(), event_type, '', x, y, dy])
+    write_event_to_csv([event_type, '', x, y, dy, elapsed_time])
+
 
 def on_press(key):
     global current_event
@@ -76,12 +91,16 @@ def on_press(key):
         # Handle special keys like 'Ctrl', 'Shift', etc.
         print(f'Special Key pressed: {key}')
 
+    # Calculate the elapsed time
+    elapsed_time = timeit.default_timer() - start_time
+
     # Write the event data to the CSV file
-    write_event_to_csv([time.time(), 'KeyPress', str(key), '', '', 0])
+    write_event_to_csv(['KeyPress', str(key), '', '', 0, elapsed_time])
 
     # Check if the F12 key is pressed to exit and save the program
     if key == keyboard.Key.f12:
         exit_listener()
+
 
 def on_release(key):
     # Stop the listener if the 'Esc' key is pressed
@@ -91,21 +110,27 @@ def on_release(key):
             write_event_to_csv(current_event)
         return False
 
+    # Calculate the elapsed time
+    elapsed_time = timeit.default_timer() - start_time
+
     # Write the event data to the CSV file
-    write_event_to_csv([time.time(), 'KeyRelease', str(key), '', '', 0])
+    write_event_to_csv(['KeyRelease', str(key), '', '', 0, elapsed_time])
+
 
 def write_event_to_csv(event):
     with open(csv_filename, mode='a', newline='') as file:
         writer = csv.writer(file)
-        writer.writerow([datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')] + event[1:])
+        writer.writerow( event)
 
 
 def start_listener():
+    global start_time
+
     # Create the CSV file if it doesn't exist
     if not os.path.exists(csv_filename):
         with open(csv_filename, 'w', newline='') as csvfile:
             writer = csv.writer(csvfile)
-            writer.writerow(['Timestamp', 'Event Type', 'Button', 'X', 'Y', 'Scroll Amount'])
+            writer.writerow(['Event Type', 'Button', 'X', 'Y', 'Scroll Amount', 'Elapsed Time'])
 
     print('Listening to mouse and keyboard events. Press ESC to stop and save the CSV file.')
 
@@ -116,6 +141,9 @@ def start_listener():
     # Start the listeners
     mouse_listener.start()
     keyboard_listener.start()
+
+    # Record the start time
+    start_time = timeit.default_timer()
 
     # Wait for the 'Esc' key to stop the listeners
     keyboard_listener.join()
