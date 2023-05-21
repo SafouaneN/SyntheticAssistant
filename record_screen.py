@@ -6,6 +6,7 @@ import numpy as np
 import csv
 import uuid
 import os
+import threading
 os.chdir(r"C:\Users\LENOVO\Documents\Studium\SoSe23\Computer vision project\secret_capture")
 
 time_stamp = datetime.datetime.now().strftime('%Y-%m-%d %H-%M-%S')
@@ -26,6 +27,8 @@ def record_video():
     # Define the video writer
     fourcc = cv2.VideoWriter_fourcc(*"mp4v")
     out = cv2.VideoWriter(output_file, fourcc, fps, (screen_width,screen_height))
+
+
     while True:
         # Capture the screen frame
         img = pyautogui.screenshot()
@@ -53,8 +56,9 @@ def record_video():
         cv2.imshow("Screen Recording", frame)
 
         # Stop recording when 'q' is pressed
-        if cv2.waitKey(1) == ord("q"):
+        if cv2.waitKey(1) == 27:
             break
+    
         # Release the video writer and close windows
     out.release()
     cv2.destroyAllWindows()
@@ -76,6 +80,5 @@ if __name__ == '__main__':
 
 
 
-a =  os.getcwd()
-print(a)
+
 
