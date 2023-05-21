@@ -8,6 +8,10 @@ from pynput import keyboard, mouse
 from csv_helper import write_event_to_csv 
 from mouse_helper import on_move,on_click,on_scroll
 from keyboard_helper import on_press,on_release
+from record_screen import record_video
+from record_screen import generate_csv_file_video
+import threading
+import uuid
 
 
 def generate_csv_filename():
@@ -33,6 +37,7 @@ def start_listener():
     # Create mouse and keyboard listeners
     mouse_listener = mouse.Listener(on_move=lambda x, y: on_move(x, y, csv_filename), on_click=lambda x, y, button, pressed: on_click(x, y, button, pressed, csv_filename), on_scroll=lambda x, y, dx, dy: on_scroll(x, y, dx, dy,csv_filename))
     keyboard_listener = keyboard.Listener(on_press=lambda key: on_press(key, csv_filename), on_release=lambda key: on_release(key, csv_filename))
+    # start recording the video
 
     # Start the listeners
     mouse_listener.start()
@@ -55,4 +60,17 @@ def start_listener():
 
 
 if __name__ == '__main__':
-    start_listener()
+    thread1 = threading.Thread(target=start_listener)
+    thread2 = threading.Thread(target=record_video)
+    thread3 = threading.Thread(target=generate_csv_file_video)
+       # Start the threads
+    thread1.start()
+    thread2.start()
+    thread3.start()
+
+    # Wait for the threads to complete
+    thread1.join()
+    thread2.join()
+    thread3.join()
+    
+d

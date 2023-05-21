@@ -5,6 +5,8 @@ import datetime
 import numpy as np
 import csv
 import uuid
+import os
+os.chdir(r"C:\Users\LENOVO\Documents\Studium\SoSe23\Computer vision project\secret_capture")
 
 time_stamp = datetime.datetime.now().strftime('%Y-%m-%d %H-%M-%S')
 filename = f'{time_stamp}.mp4'
@@ -60,12 +62,20 @@ def record_video():
     
 def generate_csv_file_video():
     timestamp = datetime.datetime.now().strftime('%Y-%m-%d %H-%M-%S')
+    filename = "Timestamp_video.csv"
     with open(filename, 'w', newline='') as file:
         # Create a CSV writer object
         writer = csv.writer(file)
-        writer.writerow(['Timestamp',"id" ])
-        writer.writerow([timestamp, uuid])
+        writer.writerow(['Timestamp_video',"id" ])
+        writer.writerow([timestamp, uuid.uuid4()])
 
 if __name__ == '__main__':
     record_video()
     generate_csv_file_video()
+
+
+
+
+a =  os.getcwd()
+print(a)
+
