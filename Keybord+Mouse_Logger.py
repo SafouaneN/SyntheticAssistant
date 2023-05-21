@@ -63,7 +63,7 @@ if __name__ == '__main__':
     thread1 = threading.Thread(target=start_listener)
     thread2 = threading.Thread(target=record_video)
     thread3 = threading.Thread(target=generate_csv_file_video)
-       # Start the threads
+    # Start the threads
     thread1.start()
     thread2.start()
     thread3.start()
