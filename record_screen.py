@@ -7,10 +7,12 @@ import csv
 import uuid
 import os
 import threading
-
+os.chdir(r"C:\Users\LENOVO\Documents\Studium\SoSe23\Computer vision project\secret_capture")
 
 time_stamp = datetime.datetime.now().strftime('%Y-%m-%d %H-%M-%S')
 filename = f'{time_stamp}.mp4'
+
+
 
 # Set the screen recording parameters
 
@@ -64,18 +66,19 @@ def record_video():
     cv2.destroyAllWindows()
 
     
-def generate_csv_file_video():
+def generate_csv_file_video(Id):
     timestamp = datetime.datetime.now().strftime('%Y-%m-%d %H-%M-%S')
     filename = "Timestamp_video.csv"
     with open(filename, 'w', newline='') as file:
         # Create a CSV writer object
+        print("yo")
         writer = csv.writer(file)
         writer.writerow(['Timestamp_video',"id" ])
-        writer.writerow([timestamp, uuid.uuid4()])
+        writer.writerow([timestamp, Id])
 
-if __name__ == '__main__':
+""" if __name__ == '__main__':
     record_video()
-    generate_csv_file_video()
+    generate_csv_file_video() """
 
 
 

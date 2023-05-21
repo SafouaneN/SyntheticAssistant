@@ -9,7 +9,7 @@ from csv_helper import write_event_to_csv
 start_time = timeit.default_timer()
 
 
-def on_move(x, y,csv_filename):
+def on_move(x, y,csv_filename,Id):
     event_type = 'Move'
     print(f'{event_type} to ({x}, {y})')
 
@@ -17,8 +17,8 @@ def on_move(x, y,csv_filename):
     elapsed_time = timeit.default_timer() - start_time
 
     # Write the event data to the CSV file
-    write_event_to_csv([event_type, '', x, y, 0, elapsed_time],csv_filename)
-def on_click(x, y, button, pressed,csv_filename):
+    write_event_to_csv([event_type, '', x, y, 0, elapsed_time],csv_filename,Id)
+def on_click(x, y, button, pressed,csv_filename,Id):
     if pressed:
         action = 'Pressed'
         if button == mouse.Button.left:
@@ -41,9 +41,9 @@ def on_click(x, y, button, pressed,csv_filename):
     elapsed_time = timeit.default_timer() - start_time
 
     # Write the event data to the CSV file
-    write_event_to_csv([time.time(), event_type, button.name if button else '', x, y, 0, elapsed_time],csv_filename)
+    write_event_to_csv([time.time(), event_type, button.name if button else '', x, y, 0, elapsed_time],csv_filename,Id)
 
-def on_scroll(x, y, dx, dy,csv_filename):
+def on_scroll(x, y, dx, dy,csv_filename,Id):
     event_type = 'Scroll'
     print(f'{event_type} {(dx, dy)} at ({x}, {y})')
 
@@ -51,4 +51,4 @@ def on_scroll(x, y, dx, dy,csv_filename):
     elapsed_time = timeit.default_timer() - start_time
 
     # Write the event data to the CSV file
-    write_event_to_csv([event_type, '', x, y, dy, elapsed_time],csv_filename)
+    write_event_to_csv([event_type, '', x, y, dy, elapsed_time],csv_filename,Id)
