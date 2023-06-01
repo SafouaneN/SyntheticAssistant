@@ -8,13 +8,30 @@ from pynput import keyboard, mouse
 from csv_helper import write_event_to_csv 
 from mouse_helper import on_move,on_click,on_scroll
 from keyboard_helper import on_press,on_release
-from record_screen import record_video
-from record_screen import generate_csv_file_video
+from mac_record_screen import record_video
+from mac_record_screen import generate_csv_file_video
 import threading
+import multiprocessing
 import uuid
 
-Id=uuid.uuid4()
+#Id=uuid.uuid4()
 
+def generate_id():
+    # Generate a timestamp-based unique Id
+    timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
+    return f'id_{timestamp}'
+
+def save_id_to_file(id):
+    # Save the Id to a file
+    with open('id.txt', 'w') as file:
+        file.write(id)
+def load_id_from_file():
+    # Load the Id from the file
+    if os.path.exists('id.txt'):
+        with open('id.txt', 'r') as file:
+            return file.read().strip()
+    else:
+        return None
 def generate_csv_filename():
     timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
     return f'events_{timestamp}.csv'
@@ -22,9 +39,11 @@ def generate_csv_filename():
 
 current_event = ''  # Variable to store the current event
 csv_filename = generate_csv_filename()
+# Threading event for synchronization
+# Threading lock for synchronization
 
 on_click.last_click = None
-def start_listener():
+def start_listener(Id):
     global start_time
 
     # Create the CSV file if it doesn't exist
@@ -42,6 +61,7 @@ def start_listener():
 
     # Start the listeners
     mouse_listener.start()
+    time.sleep(1)
     keyboard_listener.start()
 
     # Record the start time
@@ -59,18 +79,36 @@ def start_listener():
 
     print('CSV file saved.')
 
+def start_video_recording():
+    record_video()
+
+def generate_csv_and_start_recording(Id):
+    generate_csv_file_video(Id)
 
 if __name__ == '__main__':
-    thread1 = threading.Thread(target=start_listener)
-    thread2 = threading.Thread(target=record_video)
-    thread3 = threading.Thread(target=lambda: generate_csv_file_video(Id))
-       # Start the threads
-    thread1.start()
-    thread2.start()
-    thread3.start()
+    # Load the Id from the file or generate a new one
+    Id = load_id_from_file()
+    if Id is None:
+        Id = generate_id()
+        save_id_to_file(Id)
+    # Create a process for event handling
+    process1 = multiprocessing.Process(target=start_listener, args=(Id,))
+    process1.start()
 
-    # Wait for the threads to complete
-    thread1.join()
-    thread2.join()
-    thread3.join()
-    
+    # Wait for process1 to complete initialization
+    time.sleep(1)
+
+    # Create a process for screen recording
+    process2 = multiprocessing.Process(target=start_video_recording)
+    process2.start()
+
+    # Create a process for CSV generation
+    process3 = multiprocessing.Process(target=generate_csv_and_start_recording, args=(Id,))
+    process3.start()
+
+    # Wait for process1, process2, and process3 to complete
+    process1.join()
+    process2.join()
+    process3.join()
+
+
