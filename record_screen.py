@@ -7,7 +7,7 @@ import csv
 import uuid
 import os
 import threading
-os.chdir(r"C:\Users\LENOVO\Documents\Studium\SoSe23\Computer vision project\secret_capture")
+#os.chdir(r"C:\Users\LENOVO\Documents\Studium\SoSe23\Computer vision project\secret_capture")
 
 time_stamp = datetime.datetime.now().strftime('%Y-%m-%d %H-%M-%S')
 filename = f'{time_stamp}.mp4'
