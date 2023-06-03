@@ -14,7 +14,7 @@ from record_screen import record_video
 import threading
 import multiprocessing
 import uuid
-
+from multiprocessing import Event
 #Id=uuid.uuid4()
 
 def generate_id():
@@ -44,10 +44,11 @@ csv_filename = generate_csv_filename()
 # Threading lock for synchronization
 
 on_click.last_click = None
-def start_listener(Id):
+def start_listener(Id,start_time,start_event):
     #global start_time
-
+    #start_time
     # Create the CSV file if it doesn't exist
+    
     if not os.path.exists(csv_filename):
         with open(csv_filename, 'w', newline='') as csvfile:
             writer = csv.writer(csvfile)
@@ -64,7 +65,7 @@ def start_listener(Id):
     mouse_listener.start()
     time.sleep(1)
     keyboard_listener.start()
-
+    start_event.set()
     
 
     # Wait for the 'Esc' key to stop the listeners
@@ -79,10 +80,11 @@ def start_listener(Id):
 
     print('CSV file saved.')
 
-def start_video_recording():
+def start_video_recording(start_event):
     # Record the start time
-    global start_time
-    start_time = timeit.default_timer()
+    # Wait for the listener to be ready
+    start_event.wait()
+    
     if os.name == 'posix':
         mac_record_video()  # For Unix or MacOS
     
@@ -93,22 +95,24 @@ def generate_csv_and_start_recording(Id):
     generate_csv_file_video(Id)
 
 if __name__ == '__main__':
+    start_event = Event()
     # Load the Id from the file or generate a new one
     Id = load_id_from_file()
-    
+    start_time = timeit.default_timer() 
     if Id is None:
         Id = generate_id()
         save_id_to_file(Id)
+    # Create a process for screen recording
+    process2 = multiprocessing.Process(target=start_video_recording,args=(start_event,))
+    process2.start()
     # Create a process for event handling
-    process1 = multiprocessing.Process(target=start_listener, args=(Id,))
+    process1 = multiprocessing.Process(target=start_listener, args=(Id,start_time,start_event))
     process1.start()
 
     # Wait for process1 to complete initialization
     #time.sleep(1)
 
-    # Create a process for screen recording
-    process2 = multiprocessing.Process(target=start_video_recording)
-    process2.start()
+    
 
     # Create a process for CSV generation
     process3 = multiprocessing.Process(target=generate_csv_and_start_recording, args=(Id,))

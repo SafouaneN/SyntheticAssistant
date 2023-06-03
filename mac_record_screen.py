@@ -5,7 +5,7 @@ from PIL import Image
 import datetime
 import csv
 import time
-import pyautogui
+import pyautogui  
 
 def mac_record_video():
     #SCREEN_SIZE = (2880, 1800)
