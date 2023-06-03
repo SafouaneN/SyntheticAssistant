@@ -8,8 +8,9 @@ from pynput import keyboard, mouse
 from csv_helper import write_event_to_csv 
 from mouse_helper import on_move,on_click,on_scroll
 from keyboard_helper import on_press,on_release
-from mac_record_screen import record_video
+from mac_record_screen import mac_record_video
 from mac_record_screen import generate_csv_file_video
+from record_screen import record_video
 import threading
 import multiprocessing
 import uuid
@@ -80,7 +81,10 @@ def start_listener(Id):
     print('CSV file saved.')
 
 def start_video_recording():
-    record_video()
+    if os.name == 'posix':
+        mac_record_video()  # For Unix or MacOS
+    else:
+        record_video()  # For other operating systems
 
 def generate_csv_and_start_recording(Id):
     generate_csv_file_video(Id)
@@ -96,7 +100,7 @@ if __name__ == '__main__':
     process1.start()
 
     # Wait for process1 to complete initialization
-    time.sleep(1)
+    #time.sleep(1)
 
     # Create a process for screen recording
     process2 = multiprocessing.Process(target=start_video_recording)
