@@ -6,10 +6,10 @@ import timeit
 from datetime import datetime
 from pynput import keyboard, mouse
 from csv_helper import write_event_to_csv 
-start_time = timeit.default_timer()
+#start_time = timeit.default_timer()
 
 
-def on_move(x, y,csv_filename,Id):
+def on_move(x, y,csv_filename,Id,start_time):
     event_type = 'Move'
     print(f'{event_type} to ({x}, {y})')
 
@@ -18,7 +18,7 @@ def on_move(x, y,csv_filename,Id):
 
     # Write the event data to the CSV file
     write_event_to_csv([event_type, '', x, y, 0, elapsed_time],csv_filename,Id)
-def on_click(x, y, button, pressed,csv_filename,Id):
+def on_click(x, y, button, pressed,csv_filename,Id,start_time):
     if pressed:
         action = 'Pressed'
         if button == mouse.Button.left:
@@ -43,7 +43,7 @@ def on_click(x, y, button, pressed,csv_filename,Id):
     # Write the event data to the CSV file
     write_event_to_csv([time.time(), event_type, button.name if button else '', x, y, 0, elapsed_time],csv_filename,Id)
 
-def on_scroll(x, y, dx, dy,csv_filename,Id):
+def on_scroll(x, y, dx, dy,csv_filename,Id,start_time):
     event_type = 'Scroll'
     print(f'{event_type} {(dx, dy)} at ({x}, {y})')
 

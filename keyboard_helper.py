@@ -6,9 +6,9 @@ import timeit
 from datetime import datetime
 from pynput import keyboard, mouse
 from csv_helper import write_event_to_csv 
-start_time = timeit.default_timer()
+#start_time = timeit.default_timer()
 current_event = '' 
-def on_press(key, csv_filename,Id):
+def on_press(key, csv_filename,Id,start_time):
     global current_event
 
     try:
@@ -38,7 +38,7 @@ def on_press(key, csv_filename,Id):
     # Write the event data to the CSV file
     write_event_to_csv(['KeyPress', str(key), '', '', 0, elapsed_time],csv_filename,Id)
 
-def on_release(key,csv_filename,Id):
+def on_release(key,csv_filename,Id,start_time):
     # Stop the listener if the 'Esc' key is pressed
     if key == keyboard.Key.esc:
         # Write the current event to the CSV file before stopping

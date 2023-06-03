@@ -45,7 +45,7 @@ csv_filename = generate_csv_filename()
 
 on_click.last_click = None
 def start_listener(Id):
-    global start_time
+    #global start_time
 
     # Create the CSV file if it doesn't exist
     if not os.path.exists(csv_filename):
@@ -56,8 +56,8 @@ def start_listener(Id):
     print('Listening to mouse and keyboard events. Press ESC to stop and save the CSV file.')
 
     # Create mouse and keyboard listeners
-    mouse_listener = mouse.Listener(on_move=lambda x, y: on_move(x, y, csv_filename,Id), on_click=lambda x, y, button, pressed: on_click(x, y, button, pressed, csv_filename,Id), on_scroll=lambda x, y, dx, dy: on_scroll(x, y, dx, dy,csv_filename,Id))
-    keyboard_listener = keyboard.Listener(on_press=lambda key: on_press(key, csv_filename,Id), on_release=lambda key: on_release(key, csv_filename,Id))
+    mouse_listener = mouse.Listener(on_move=lambda x, y: on_move(x, y, csv_filename,Id,start_time), on_click=lambda x, y, button, pressed: on_click(x, y, button, pressed, csv_filename,Id,start_time), on_scroll=lambda x, y, dx, dy: on_scroll(x, y, dx, dy,csv_filename,Id,start_time))
+    keyboard_listener = keyboard.Listener(on_press=lambda key: on_press(key, csv_filename,Id,start_time), on_release=lambda key: on_release(key, csv_filename,Id,start_time))
     # start recording the video
 
     # Start the listeners
@@ -65,8 +65,7 @@ def start_listener(Id):
     time.sleep(1)
     keyboard_listener.start()
 
-    # Record the start time
-    start_time = timeit.default_timer()
+    
 
     # Wait for the 'Esc' key to stop the listeners
     keyboard_listener.join()
@@ -81,9 +80,13 @@ def start_listener(Id):
     print('CSV file saved.')
 
 def start_video_recording():
+    # Record the start time
+    global start_time
+    start_time = timeit.default_timer()
     if os.name == 'posix':
         mac_record_video()  # For Unix or MacOS
-    else:
+    
+    else: 
         record_video()  # For other operating systems
 
 def generate_csv_and_start_recording(Id):
@@ -92,6 +95,7 @@ def generate_csv_and_start_recording(Id):
 if __name__ == '__main__':
     # Load the Id from the file or generate a new one
     Id = load_id_from_file()
+    
     if Id is None:
         Id = generate_id()
         save_id_to_file(Id)
