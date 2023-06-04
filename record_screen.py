@@ -24,7 +24,7 @@ def record_video():
     fps = 20.0
     
     # Load custom mouse pointer image with transparent background
-    custom_pointer_image = Image.open("icons8-3d-pointer-50.png").convert("RGBA")
+    custom_pointer_image = Image.open("pngwing.com.png").convert("RGBA")
     
     # Define the video writer
     fourcc = cv2.VideoWriter_fourcc(*"mp4v")
@@ -76,9 +76,9 @@ def generate_csv_file_video(Id):
         writer.writerow(['Timestamp_video',"id" ])
         writer.writerow([timestamp, Id])
 
-""" if __name__ == '__main__':
+if __name__ == '__main__':
     record_video()
-    generate_csv_file_video() """
+    generate_csv_file_video() 
 
 
 
