@@ -41,7 +41,7 @@ def on_click(x, y, button, pressed,csv_filename,Id,start_time):
     elapsed_time = timeit.default_timer() - start_time
 
     # Write the event data to the CSV file
-    write_event_to_csv([time.time(), event_type, button.name if button else '', x, y, 0, elapsed_time],csv_filename,Id)
+    write_event_to_csv([ event_type, button.name if button else '', x, y, 0, elapsed_time],csv_filename,Id)
 
 def on_scroll(x, y, dx, dy,csv_filename,Id,start_time):
     event_type = 'Scroll'
