@@ -80,10 +80,10 @@ def start_listener(Id,start_time,start_event):
 
     print('CSV file saved.')
 
-def start_video_recording(start_event):
+def start_video_recording():
     # Record the start time
     # Wait for the listener to be ready
-    start_event.wait()
+    #start_event.wait()
     
     if os.name == 'posix':
         mac_record_video()  # For Unix or MacOS
@@ -94,6 +94,7 @@ def start_video_recording(start_event):
 def generate_csv_and_start_recording(Id):
     generate_csv_file_video(Id)
 
+
 if __name__ == '__main__':
     start_event = Event()
     # Load the Id from the file or generate a new one
@@ -103,18 +104,16 @@ if __name__ == '__main__':
         Id = generate_id()
         save_id_to_file(Id)
     # Create a process for screen recording
-    process2 = multiprocessing.Process(target=start_video_recording,args=(start_event,))
-    process2.start()
-    # Create a process for event handling
-    process1 = multiprocessing.Process(target=start_listener, args=(Id,start_time,start_event))
+    process1 = multiprocessing.Process(target=start_video_recording)
     process1.start()
-
-    # Wait for process1 to complete initialization
-    #time.sleep(1)
-
+    time.sleep(1)
+    # Create a process for event handling
+    process2 = multiprocessing.Process(target=start_listener, args=(Id,start_time,start_event))
+    process2.start()
     
 
     # Create a process for CSV generation
+    #process3 = delayed_function()
     process3 = multiprocessing.Process(target=generate_csv_and_start_recording, args=(Id,))
     process3.start()
 

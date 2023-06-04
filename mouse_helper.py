@@ -6,7 +6,7 @@ import timeit
 from datetime import datetime
 from pynput import keyboard, mouse
 from csv_helper import write_event_to_csv 
-#start_time = timeit.default_timer()
+start_time = timeit.default_timer()
 
 
 def on_move(x, y,csv_filename,Id,start_time):
