@@ -4,14 +4,14 @@ from utility import tempfile
 from execute_actions import execute_action
 from config import loop_sequence
 from roboflow_actions import get_model
+from main_sequence import get_screenshot_from_host
 
 def check_unread_emails():
     model = get_model()
     for email_step in loop_sequence:
+        print("email loop")
         time.sleep(2)
-        screenshot = PIL.ImageGrab.grab()
-        temp_file = tempfile.NamedTemporaryFile(suffix=".png", delete=False)
-        screenshot.save(temp_file.name)
+        temp_file =get_screenshot_from_host()
         # Adjust prediction confidence for unread_email check
         if email_step["target_object"] == "unread_email":
             prediction_confidence = 0.6  # or whichever value you prefer

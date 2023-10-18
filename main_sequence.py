@@ -1,17 +1,26 @@
 import time
-import PIL.ImageGrab
 from utility import tempfile
 from execute_actions import execute_action
 from config import sequence
 from roboflow_actions import get_model
+import requests
+from pyautoguifunctions import get_screenshot_from_host
+
+
 
 def execute_main_sequence():
     model = get_model()
     for email_step in sequence:
         time.sleep(2)
-        screenshot = PIL.ImageGrab.grab()
-        temp_file = tempfile.NamedTemporaryFile(suffix=".png", delete=False)
-        screenshot.save(temp_file.name)
+        # screenshot = PIL.ImageGrab.grab()
+        # temp_file = tempfile.NamedTemporaryFile(suffix=".png", delete=False)
+        # screenshot.save(temp_file.name)
+        # path_to_save = "/app/prediction.jpg"
+
+        temp_file = get_screenshot_from_host()
+ 
+
+        # model.predict(temp_file.name).save(path_to_save)
         # Adjust prediction confidence for unread_email check
         if email_step["target_object"] == "unread_email":
             prediction_confidence = 0.6  # or whichever value you prefer

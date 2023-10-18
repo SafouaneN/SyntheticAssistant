@@ -1,0 +1,12 @@
+_pycache_
+*.pyc
+*.pyo
+*.pyd
+*.db
+*.log
+*.jpg
+*.png
+screenshot.py
+screenshotServer.py
+automationvenv
+_pycache_
