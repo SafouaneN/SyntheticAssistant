@@ -3,6 +3,8 @@ import tempfile
 import pyautogui
 import shutil
 import os
+pyautogui.FAILSAFE = False
+
 
 def capture_and_save():
     # Capture the screenshot
@@ -22,10 +24,11 @@ def capture_and_save():
         os.remove(temp_file.name)
 #capture_and_save()
 def movetest():
-    pyautogui.moveTo(1242,1221.5)
+    #pyautogui.moveTo(1242,1221.5)
     x,y=pyautogui.size()
     z= PIL.ImageGrab.grab()
-
+    pyautogui.moveTo(2560, 1440)
+    pyautogui.moveTo(2560 ,1440)
     print(x,y,z.width,z.height)
 
 movetest()

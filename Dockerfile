@@ -5,7 +5,7 @@ FROM python:3.9.7-slim-buster
 RUN apt-get update && apt-get install -y python3-tk python3-dev && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Set the working directory in the Docker container
-WORKDIR /Users/jawhersaid/Desktop/assis_auto/htcv_ss23project_syntheticassistant
+WORKDIR /home/hellwich/hellwich/lehre/ProjectSelfSupervised/repo2/htcv_ss23project_syntheticassistant
 
 # Copy the content of the local src directory to the working directory
 COPY . .

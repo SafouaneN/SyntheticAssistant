@@ -28,6 +28,7 @@ def execute_main_sequence():
             prediction_confidence = 0 # default confidence level
         
         prediction_result = model.predict(temp_file.name, confidence=prediction_confidence, overlap=30).json()
+        print(prediction_result)
         found_match = False
         for prediction in prediction_result['predictions']:
             if prediction['class'] == email_step["target_object"]:

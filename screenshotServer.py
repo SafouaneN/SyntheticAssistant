@@ -3,15 +3,18 @@ import platform
 from flask import Flask, send_from_directory, request, jsonify
 import PIL.ImageGrab
 import pyautogui
+pyautogui.FAILSAFE = False
+
+
 
 app = Flask(__name__)
 
 @app.route('/screenshot', methods=['GET'])
 def take_screenshot():
     screenshot = PIL.ImageGrab.grab()
-    screenshot_path = "/Users/jawhersaid/Desktop/assis_auto/htcv_ss23project_syntheticassistant/screenshot.png"  # Corrected the folder name
+    screenshot_path = "/home/hellwich/hellwich/lehre/ProjectSelfSupervised/repo2/htcv_ss23project_syntheticassistant/screenshot.png"  # Corrected the folder name
     screenshot.save(screenshot_path)
-    return send_from_directory("/Users/jawhersaid/Desktop/assis_auto/htcv_ss23project_syntheticassistant", "screenshot.png")
+    return send_from_directory("/home/hellwich/hellwich/lehre/ProjectSelfSupervised/repo2/htcv_ss23project_syntheticassistant", "screenshot.png")
 @app.route('/screenshot-sizes', methods=['GET'])
 def screenshot_sizes():
     # Taking the screenshot
