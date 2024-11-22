@@ -1,92 +1,87 @@
 # HTCV_SS23Project_SyntheticAssistant
 
+## Overview
+HTCV_SS23Project_SyntheticAssistant commenced with the goal of collecting interaction data to facilitate AI model training for automated email response systems. Due to time constraints, the focus was adjusted to create a software-like automation tool for email-related tasks, leveraging object detection.
+
+## Getting Started
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
+
+### Prerequisites
++ Docker (for the automation program)
++ Python 3.x
+
+### Setup
+1. **Install Python:**
+   Ensure Python 3.x is installed on your system. Python can be downloaded from the [official Python website](https://www.python.org/downloads/).
+
+2. **Clone Repository:**
+   Clone the project repository to your local machine.
+
+   ```bash
+   git clone git@git.tu-berlin.de:cvrs/htcv_ss23project_syntheticassistant.git
+   ```
+3. **Install Dependencies:**
+  In the project directory, install the necessary Python libraries by running this in the Terminal:
+   ```bash 
+   pip install -r requirements.txt
+   ```
+## Data Collection Deployment (Only necessary when you want to collect new data, would also work if you skup this step)
+   
+1. **Run the Logger Script:**
+Execute the Keyboard+Mouse_Logger.py script to start the logging process (located in the "cross_platform2" branch):
+   ```bash
+   python Keyboard+Mouse_Logger.py 
+   ``` 
+   To finish and save the recorded data, press the 'Escape' key.
+   This will terminate the logging process and save the recorded keyboard and mouse activities, as well as the video.
+
+## Automation Program Deployment with Docker
+### Prerequisites
+Docker must be installed on your system. You can download it from the Docker website. Use the "finalBranch" for macOS and the ""olafsBranch2" for Ubuntu.
+
+### Steps to Run the Program in Docker
+
+1. **Running the Screenshot Server:**
+To enable the screenshot functionality, you need to run a Flask server by executing the following Python script in a separate terminal:
+   ```bash
+   python screenshot_server.py
+   ```
+   This script launches a Flask server on http://0.0.0.0:5005 to handle screenshot-related requests.
 
 
-## Getting started
+2. **Build the Docker Image:**
+Open a terminal and navigate to the directory with your Dockerfile. Build the Docker image with:
+   ```bash 
+   docker build -t <image-name> .
+   ```
+   Replace <image-name> with a name of your choice for the Docker image.
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+3. **Run the Docker Container:**
+Launch the Docker container from the built image:
+   ```bash
+   docker run -p <host-port>:<container-port> <image-name> 
+   ```
+   + Replace <host-port> with the port number on your host machine you want to use. 
+   + Replace <container-port> with the port number your application uses inside the container.
+   + Ensure <image-name> matches the name you used when building the image.
 
-## Add your files
+   This command starts the automation program inside the container and exposes it on the specified port of your local machine.
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
 
-```
-cd existing_repo
-git remote add origin https://git.tu-berlin.de/cvrs/htcv_ss23project_syntheticassistant.git
-git branch -M main
-git push -uf origin main
-```
+4. **Access the Program:**
+Once the container is running, the automation program will operate automatically.
 
-## Integrate with your tools
+## Project Status
+The project is in the development phase. The data collection infrastructure is ready for deployment, and the email automation program is operational within a Docker environment.
 
-- [ ] [Set up project integrations](https://git.tu-berlin.de/cvrs/htcv_ss23project_syntheticassistant/-/settings/integrations)
+**Completion Status:** The current version of the project has been completed and is functional for its intended purposes.
 
-## Collaborate with your team
+**Future Work:** While the project has achieved its primary goals, there are opportunities for further enhancement. One potential avenue for future work involves leveraging the collected data for training deep learning models, enhancing the capabilities of the email automation system.
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Automatically merge when pipeline succeeds](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
-
-## Test and Deploy
-
-Use the built-in continuous integration in GitLab.
-
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing(SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
-
-***
-
-# Editing this README
-
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thank you to [makeareadme.com](https://www.makeareadme.com/) for this template.
-
-## Suggestions for a good README
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
-
-## Name
-Choose a self-explaining name for your project.
-
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
-
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
-
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
-
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
-
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
-
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
-
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
-
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
-
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+## Authors and Acknowledgment
+The project is made by Jawher Said, Yassine Dhieb, and Safouane Nciri under the supervision of Professor Olaf Hellwich at Technische Universität Berlin.
 
 ## License
-For open source projects, say how it is licensed.
+This project is released under the Unlicense.
 
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
