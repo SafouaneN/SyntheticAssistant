@@ -25,7 +25,7 @@ These instructions will get you a copy of the project up and running on your loc
    ```bash 
    pip install -r requirements.txt
    ```
-## Data Collection Deployment (Only necessary when you want to collect new data, would also work if you skup this step)
+## Data Collection Deployment (Only necessary when you want to collect new data, it would also work if you skip this step)
    
 1. **Run the Logger Script:**
 Execute the Keyboard+Mouse_Logger.py script to start the logging process (located in the "cross_platform2" branch):
